@@ -1,0 +1,159 @@
+def main():
+    board = []
+    operator = 1
+    counter = 0
+    board = create_board(board)
+    print_board(board)
+
+    while operator != 0:
+
+        if counter % 2 == 0:
+            player_id = 1
+
+        if counter % 2 == 1:
+            player_id = 2
+
+        print("Player", player_id, " turn")
+        user_row = int(input("Enter row number 0 to 2: "))
+
+        position = False
+        while position == False:
+            while user_row > 2:
+                print("invalid input, please enter new value")
+                user_row = int(input("Enter row number 0 to 2: "))
+
+            user_column = int(input("Enter column number 0 to 2: "))
+            while user_column > 2:
+                print("Invalid input, please enter new value")
+                user_column = int(input("Enter column number 0 to 2: "))
+
+            if check_board(board, user_row, user_column) == True:
+                board = add_to_board(board, user_row, user_column, player_id)
+                position = True
+            else:
+                position = False
+                print("Invalid position")
+        print_board(board)
+
+        if check_row(board, player_id):
+            print("Player ", player_id, " wins!")
+            break
+
+        if check_column(board, player_id):
+            print("Player ", player_id, " wins!")
+            break
+
+        if check_diagonal(board, player_id):
+            print("Player ",player_id, " wins!")
+            break
+
+        counter = counter + 1
+
+
+def create_board(board):
+        for i in range(3):
+            row = []
+            for j in range(3):
+                row.append('-')
+            board.append(row)
+        return board
+
+
+def print_board(board):
+    for line in board:
+        print(line)
+
+
+def check_board(board, user_row, user_column):
+    if board[user_row][user_column] == "-":
+        return True
+    else:
+        return False
+
+
+def check_row(board, player_id):
+    id = 'Null'
+    if player_id == 1:
+        id = 'X'
+    if player_id == 2:
+        id = 'O'
+
+    win = None
+    for i in range(3):
+        win = True
+        for f in range(3):
+            if board[i][f] != id:
+                win = False
+                break
+        return win
+
+
+def check_column(board, player_id):
+    id = 'Null'
+    if player_id == 1:
+        id = 'X'
+    if player_id == 2:
+        id = 'O'
+
+    win = None
+    for i in range(3):
+        win = True
+        for f in range(3):
+            #print(board[i][f])
+            if board[f][i] != id:
+                win = False
+                break
+        if win:
+            return win
+
+
+def check_diagonal(board, player_id):
+    id = 'Null'
+    if player_id == 1:
+        id = 'X'
+    if player_id == 2:
+        id = 'O'
+
+    win = True
+
+    for i in range(3):
+        if board[i][i] != id:
+            win = False
+            break
+    if win:
+        return win
+
+
+    counter = 0
+    for i in range(3):
+        #print(board[i][3 - 1 - i])
+        if board[i][3 - 1 - i] == id:
+           counter = counter + 1
+           if counter > 2:
+               win = True
+               return win
+
+        if board[i][3 - 1 - i] != id:
+            win = False
+            break
+
+    if win:
+        return win
+
+    for row in board:
+        for i in row:
+            if i == '-':
+                win = False
+
+
+def add_to_board(board, user_row, user_column, player_id):
+    id = 'Null'
+    if player_id == 1:
+        id = 'X'
+    if player_id == 2:
+        id = 'O'
+
+    board[user_row][user_column] = id
+    return board
+
+main()
